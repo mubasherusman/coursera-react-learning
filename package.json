@@ -1,0 +1,24 @@
+{
+  "name": "react-test",
+  "version": "1.0.0",
+  "description": "A project for the learning of react from coursera",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm run lite",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lite": "lite-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mubasherusman/coursera-react-learning.git"
+  },
+  "author": "Mubasher Usman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mubasherusman/coursera-react-learning/issues"
+  },
+  "homepage": "https://github.com/mubasherusman/coursera-react-learning#readme",
+  "devDependencies": {
+    "lite-server": "^2.4.0"
+  }
+}
