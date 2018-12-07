@@ -1,7 +1,9 @@
-import React ,{Component, Fragment} from 'react'
-import {Navbar,NavbarBrand} from 'reactstrap'
+import React ,{Component, Fragment} from 'react';
+import Header from './Header';
 import Menu from './Menu';
 import DishDetail from './DishDetail';
+import Footer from './Footer';
+
 import {DISHES} from '../shared/dishes';
 
 class Main extends Component {
@@ -26,13 +28,10 @@ class Main extends Component {
     render(){
         return (
             <Fragment>
-               <Navbar color="primary" dark>
-                    <div className="container">
-                        <NavbarBrand href="/">Resturent</NavbarBrand>
-                    </div>
-                </Navbar>
+                <Header />
                 <Menu dishes={this.state.dishes} onClick={(dishId) => this.onDishSelection(dishId)}/>
                 <DishDetail selectedDish={this.getDishById(this.state.selectedDishId)} />
+                <Footer />
             </Fragment>
         )
     }
