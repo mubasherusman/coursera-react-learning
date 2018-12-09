@@ -2,6 +2,7 @@ import React ,{Component, Fragment} from 'react';
 import Home from './Home';
 import Header from './Header';
 import Menu from './Menu';
+import DishDetail from './DishDetail';
 import Contact from './ContactUs'
 import Footer from './Footer';
 
@@ -29,13 +30,19 @@ class Main extends Component {
             <Fragment>
                 <Header />
                 <Switch>
-                    <Route exact path="/home" component={() => <Home  
+                    <Route exact path="/home" render={() => <Home  
                         dish={this.state.dishes.filter(d => d.featured)[0]}
                         promotion={this.state.promotions.filter(f => f.featured)[0]}
                         leader={this.state.leaders.filter(l => l.featured)[0]}
                         />}>
                     </Route> 
-                    <Route exact path="/menu" component={() => <Menu dishes={this.state.dishes} />} />
+                    <Route exact path="/menu" render={() => <Menu dishes={this.state.dishes} />} />
+                    <Route path="/menu/:id" render={({match}) => (
+                        <DishDetail 
+                            selectedDish={this.state.dishes.filter(d => d.id === parseInt(match.params.id))[0]}
+                            comments={this.state.comments.filter(c => c.dishId === parseInt(match.params.id))}
+                        />
+                    )} />
                     <Route exact path="/contactus" component={Contact} />
                     <Redirect to="/home" />
                 </Switch>

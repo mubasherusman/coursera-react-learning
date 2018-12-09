@@ -1,5 +1,6 @@
 import React, {Fragment} from 'react';
-import {Card, CardImg, CardText, CardBody,  CardTitle } from 'reactstrap'
+import {Card, CardImg, CardText, CardBody,  CardTitle, Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import {Link} from 'react-router-dom';
 
 
 function RenderDish({dish}) {
@@ -20,9 +21,9 @@ function RenderDish({dish}) {
     }
 }
 
-function RenderComments({dish}) {
-    if (dish!=null && dish.comments !== null) {
-        const commentSection = dish.comments.map( comment => {
+function RenderComments({comments}) {
+    if (comments!=null) {
+        const commentSection = comments.map( comment => {
             var dateLocal = new Date(Date.parse(comment.date));
             const dateFormat = {
                 year: 'numeric',
@@ -58,11 +59,22 @@ const DishDetail = (props) => {
     return (
         <div className="container">
             <div className="row">
-                <div  className="col-12 col-md-5 mt-2">
+                <Breadcrumb className="mt-2">
+                    <BreadcrumbItem><Link to="/home">Home</Link></BreadcrumbItem>
+                    <BreadcrumbItem><Link to="/menu">Menu</Link></BreadcrumbItem>
+                    <BreadcrumbItem active>{props.selectedDish.name}</BreadcrumbItem>
+                </Breadcrumb>
+                <div className="col-12">
+                    <h3>{props.selectedDish.name}</h3>
+                    <hr />
+                </div>        
+            </div>
+            <div className="row">
+                <div  className="col-12 col-md-5 mt-5">
                     <RenderDish dish={props.selectedDish} />
                 </div> 
-                <div className="col-12 col-md-5 m-1">
-                    <RenderComments dish={props.selectedDish} /> 
+                <div className="col-12 col-md-5 m-5">
+                    <RenderComments comments={props.comments} /> 
                 </div>
             </div>
         </div>
