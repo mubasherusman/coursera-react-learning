@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
@@ -24,35 +24,13 @@ function RenderLeader({leader}){
   
 }
 
-function RenderLeaders({leaders}){
-    if(leaders != null ){
-        const leader = leaders.map(eachItem => {
-            return(
-                <RenderLeader leader={eachItem} />
-            )
-        });
-        
-        return(
-            <Fragment>
-                <div className="col-12">
-                    <h2>Corporate Leadership</h2>
-                </div>
-                <div className="col-12">
-                    <Media list>
-                        {leader}
-                    </Media>
-                </div>
-            </Fragment>
-        );
-
-    } else {
-        return(
-            <div></div>
-        );
-    }
-}
-
 function About(props) {
+    
+    const leaders = props.leaders != null? props.leaders.map((item) => {
+        return (
+            <RenderLeader leader={item} />
+        );
+    }) : <div></div> ;
 
     return(
         <div className="container" key="aboutus">
@@ -105,7 +83,14 @@ function About(props) {
                 </div>
             </div>
             <div className="row row-content">
-                <RenderLeaders leaders={props.leaders} />
+                <div className="col-12">
+                    <h2>Corporate Leadership</h2>
+                </div>
+                <div className="col-12">
+                    <Media list>
+                        {leaders}
+                    </Media>
+                </div>
             </div>
         </div>
     );
