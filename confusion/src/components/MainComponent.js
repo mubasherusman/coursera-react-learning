@@ -4,6 +4,7 @@ import Header from './Header';
 import Menu from './Menu';
 import DishDetail from './DishDetail';
 import Contact from './ContactUs'
+import About from './AboutUs'
 import Footer from './Footer';
 
 import {Switch, Route, Redirect} from 'react-router-dom';
@@ -44,6 +45,7 @@ class Main extends Component {
                         />
                     )} />
                     <Route exact path="/contactus" component={Contact} />
+                    <Route exact path="/aboutus" component={() => <About leaders={this.state.leaders} />} />
                     <Redirect to="/home" />
                 </Switch>
                 <Footer />
