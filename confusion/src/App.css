@@ -10,15 +10,47 @@
     min-height:400px;
 }
 
-.footer{
-    background-color: #D1C4E9;
-    margin:0px auto;
-    padding: 20px 0px 20px 0px;
+.navbar-dark {
+    background-color: #A59388;
 }
 
+.footer{
+    color: #d2d2d6;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    padding: 100px 0 0 0;
+    margin-top: 1%;
+    background: #2A110E;
+    position: relative;
+    z-index: 20;
+}
+
+.footer ul a {
+    color: #d2d2d6;
+}
+
+.jumbotron {
+    padding:70px 30px 70px 30px;
+    margin:0px auto;
+    background: #EDE3DA ;
+}
 
 address{
     font-size:80%;
     margin:0px;
-    color:#0f0f0f;
+    color:#d2d2d6;
+}
+
+.copyright {
+    padding-top: 100px;
+}
+
+.social-icon {
+    margin-right: .2em;
+}
+
+.imageSize{
+    height: 300;
+    width: 300;
 }
