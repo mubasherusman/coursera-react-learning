@@ -31,6 +31,11 @@ class Main extends Component {
             <Fragment>
                 <Header />
                 <Switch>
+                    {   /* There is not performance different between component and render prop,
+                       If you are using component={AppComponent} directly, 
+                       If you want to assign some props to AppComponent, 
+                       use render={() => <AppComponent {...props}/> } 
+                       instead of component={() => <AppComponent {...props}/> } */}
                     <Route exact path="/home" render={() => <Home  
                         dish={this.state.dishes.filter(d => d.featured)[0]}
                         promotion={this.state.promotions.filter(f => f.featured)[0]}
@@ -45,7 +50,7 @@ class Main extends Component {
                         />
                     )} />
                     <Route exact path="/contactus" component={Contact} />
-                    <Route exact path="/aboutus" component={() => <About leaders={this.state.leaders} />} />
+                    <Route exact path="/aboutus" render={() => <About leaders={this.state.leaders} />} />
                     <Redirect to="/home" />
                 </Switch>
                 <Footer />

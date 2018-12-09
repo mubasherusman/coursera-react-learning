@@ -26,7 +26,7 @@ const Menu = (props) => {
     });
 
     return(
-        <div className="container">
+        <div className="container" key="menu">
             <div className="row">
                 <Breadcrumb className="mt-2">
                     <BreadcrumbItem><NavLink to="/home">Home</NavLink></BreadcrumbItem>

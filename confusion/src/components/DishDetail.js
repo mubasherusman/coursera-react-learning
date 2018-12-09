@@ -6,7 +6,7 @@ import {Link} from 'react-router-dom';
 function RenderDish({dish}) {
     if (dish != null) {
         return(
-            <Card>
+            <Card key={dish.id}>
                 <CardImg top src={dish.image} alt={dish.name} />
                 <CardBody>
                     <CardTitle>{dish.name}</CardTitle>
@@ -40,7 +40,7 @@ function RenderComments({comments}) {
         });
         
         return(
-            <Fragment>
+            <Fragment key="comments">
                 <h4>Comments</h4>
                 <ul className="list-unstyled">
                     {commentSection}
@@ -57,7 +57,7 @@ function RenderComments({comments}) {
 
 const DishDetail = (props) => {
     return (
-        <div className="container">
+        <div className="container" key={props.selectedDish.name}>
             <div className="row">
                 <Breadcrumb className="mt-2">
                     <BreadcrumbItem><Link to="/home">Home</Link></BreadcrumbItem>
