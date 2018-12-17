@@ -28,7 +28,7 @@ function About(props) {
     
     const leaders = props.leaders != null? props.leaders.map((item) => {
         return (
-            <RenderLeader leader={item} />
+            <RenderLeader leader={item} key={item.id}/>
         );
     }) : <div></div> ;
 
