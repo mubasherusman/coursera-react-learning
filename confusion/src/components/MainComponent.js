@@ -7,20 +7,34 @@ import Contact from './ContactUs'
 import About from './AboutUs'
 import Footer from './Footer';
 
-import {connect} from 'react-redux'
+import {connect} from 'react-redux';
+import {addComment, fetchDishes} from '../redux/ActionCreaters';
 
 import {Switch, Route, Redirect, withRouter} from 'react-router-dom';
 
 const mapStateToProps = (state) => {
     return {
-        dishes: state.dishes,
+        disheStore: state.dishes,
         comments: state.comments,
         promotions: state.promotions,
         leaders: state.leaders
     }
 }
 
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addComment: function(dishId, rating, author, comment) {
+                    dispatch(addComment(dishId, rating, author, comment))
+                  },
+        fetchDishes: function(){dispatch(fetchDishes())}
+    }
+};
+
 class Main extends Component {
+
+    componentDidMount(){
+        this.props.fetchDishes();
+    }
 
     render(){
 
@@ -34,16 +48,21 @@ class Main extends Component {
                        use render={() => <AppComponent {...props}/> } 
                        instead of component={() => <AppComponent {...props}/> } */}
                     <Route exact path="/home" render={() => <Home  
-                        dish={this.props.dishes.filter(d => d.featured)[0]}
+                        dish={this.props.disheStore.dishes.filter(d => d.featured)[0]}
+                        dishLoading={this.props.disheStore.isLoading}
+                        dishErrMsg={this.props.disheStore.errMsg}
                         promotion={this.props.promotions.filter(f => f.featured)[0]}
                         leader={this.props.leaders.filter(l => l.featured)[0]}
                         />}>
                     </Route> 
-                    <Route exact path="/menu" render={() => <Menu dishes={this.props.dishes} />} />
+                    <Route exact path="/menu" render={() => <Menu   dishStore={this.props.disheStore} />}  />
                     <Route path="/menu/:id" render={({match}) => (
                         <DishDetail 
-                            selectedDish={this.props.dishes.filter(d => d.id === parseInt(match.params.id))[0]}
+                            selectedDish={this.props.disheStore.dishes.filter(d => d.id === parseInt(match.params.id))[0]}
+                            dishLoading={this.props.disheStore.isLoading}
+                            dishErrMsg={this.props.disheStore.errMsg}
                             comments={this.props.comments.filter(c => c.dishId === parseInt(match.params.id))}
+                            addComment={this.props.addComment}
                         />
                     )} />
                     <Route exact path="/contactus" component={Contact} />
@@ -55,4 +74,4 @@ class Main extends Component {
         )
     }
 }
-export default withRouter(connect(mapStateToProps)(Main));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));

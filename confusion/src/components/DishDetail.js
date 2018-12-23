@@ -1,8 +1,8 @@
 import React, {Fragment} from 'react';
 import {Card, CardImg, CardText, CardBody,  CardTitle, Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import {Link} from 'react-router-dom';
-
 import CommentsForm from './CommentsForm';
+import { Spinner } from './LoadingSpinner';
 
 function RenderDish({dish}) {
     if (dish != null) {
@@ -17,7 +17,7 @@ function RenderDish({dish}) {
         );
     } else {
         return(
-            <div></div>
+            <Fragment />
         );
     }
 }
@@ -53,35 +53,54 @@ function RenderComments({comments}) {
             <div></div>
         );
     }
-    
 }
 
 const DishDetail = (props) => {
-    return (
-        <div className="container" key={props.selectedDish.name}>
-            <div className="row">
-                <Breadcrumb className="mt-2">
-                    <BreadcrumbItem><Link to="/home">Home</Link></BreadcrumbItem>
-                    <BreadcrumbItem><Link to="/menu">Menu</Link></BreadcrumbItem>
-                    <BreadcrumbItem active>{props.selectedDish.name}</BreadcrumbItem>
-                </Breadcrumb>
-                <div className="col-12">
-                    <h3>{props.selectedDish.name}</h3>
-                    <hr />
-                </div>        
-            </div>
-            <div className="row">
-                <div  className="col-12 col-md-5 mt-5">
-                    <RenderDish dish={props.selectedDish} />
-                </div> 
-                <div className="col-12 col-md-5 m-5">
-                    <RenderComments comments={props.comments} /> 
-                    <CommentsForm />
+            
+        if (props.dishLoading) {
+            return(
+                <div className="container">
+                    <div className="row">            
+                        <Spinner />
+                    </div>
                 </div>
-                
-            </div>
-        </div>
-    )
+            );
+        }
+        else if (props.dishErrMsg) {
+            return(
+                <div className="container">
+                    <div className="row">            
+                        <h4>{props.dishErrMsg}</h4>
+                    </div>
+                </div>
+            );
+        }
+        else if (props.selectedDish != null) {
+            return (
+                <div className="container" key={props.selectedDish.name}>
+                    <div className="row">
+                        <Breadcrumb className="mt-2">
+                            <BreadcrumbItem><Link to="/home">Home</Link></BreadcrumbItem>
+                            <BreadcrumbItem><Link to="/menu">Menu</Link></BreadcrumbItem>
+                            <BreadcrumbItem active>{props.selectedDish.name}</BreadcrumbItem>
+                        </Breadcrumb>
+                        <div className="col-12">
+                            <h3>{props.selectedDish.name}</h3>
+                            <hr />
+                        </div>        
+                    </div>
+                    <div className="row">
+                        <div  className="col-12 col-md-5 mt-5">
+                            <RenderDish dish={props.selectedDish} />
+                        </div> 
+                        <div className="col-12 col-md-5 m-5">
+                            <RenderComments comments={props.comments} /> 
+                            <CommentsForm addComment={props.addComment} dishId={props.selectedDish.id} />
+                        </div>
+                    </div>
+                </div>
+            )
+        }
 }
 
 export default DishDetail;

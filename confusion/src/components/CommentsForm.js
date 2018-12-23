@@ -6,7 +6,8 @@ const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
 const minLength = (len) => (val) => val && (val.length >= len);
 
-export default class CommentsForm extends Component {
+export default
+class CommentsForm extends Component {
 
     constructor(props){
         super(props)
@@ -16,17 +17,14 @@ export default class CommentsForm extends Component {
         };
     }
 
-
-
     toggleModal(){
         this.setState(
             {isModalOpen: !this.state.isModalOpen}
         )
     }
 
-    handleSubmit(values){
-        console.log('Current State is: ' + JSON.stringify(values));
-        alert('Current State is: ' + JSON.stringify(values));
+    handleSubmit(values){ 
+        this.props.addComment(this.props.dishId, values.rating, values.name, values.comment);
         this.toggleModal();
     }
 
@@ -74,7 +72,7 @@ export default class CommentsForm extends Component {
                             </div>
                             <div className="form-group">
                                 <label htmlFor="comment" >Comment</label>
-                                <Control.textarea model=".comment" id="comment" name="comment"  rows="5"  className="form-control" />
+                                <Control.textarea model=".comment" id="comment" name="comment"  rows="6"  className="form-control" />
                                
                             </div>
                             <div className="form-group">
@@ -88,5 +86,4 @@ export default class CommentsForm extends Component {
             </Fragment>
         )
     }
-    
 }
