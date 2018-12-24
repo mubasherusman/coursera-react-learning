@@ -8,25 +8,28 @@ import About from './AboutUs'
 import Footer from './Footer';
 
 import {connect} from 'react-redux';
-import {addComment, fetchDishes} from '../redux/ActionCreaters';
+import {postComment, fetchDishes, fetchComments, fetchPromos, fetchLeaders} from '../redux/ActionCreaters';
 
 import {Switch, Route, Redirect, withRouter} from 'react-router-dom';
+import { actions } from 'react-redux-form';
 
 const mapStateToProps = (state) => {
     return {
-        disheStore: state.dishes,
-        comments: state.comments,
-        promotions: state.promotions,
-        leaders: state.leaders
+        dishStore: state.dishes,
+        commentStore: state.comments,
+        promotionStore: state.promotions,
+        leaderStore: state.leaders
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        addComment: function(dishId, rating, author, comment) {
-                    dispatch(addComment(dishId, rating, author, comment))
-                  },
-        fetchDishes: function(){dispatch(fetchDishes())}
+        fetchDishes: function(){dispatch(fetchDishes())},
+        fetchComments: () => dispatch(fetchComments()),
+        fetchPromos: () => dispatch(fetchPromos()),
+        fetchLeaders: () => dispatch(fetchLeaders()),
+        postComment: (dishId, rating, author, comment) => dispatch(postComment(dishId, rating, author, comment)),
+        resetFeedbackForm: () => { dispatch(actions.reset('feedback'))},
     }
 };
 
@@ -34,6 +37,9 @@ class Main extends Component {
 
     componentDidMount(){
         this.props.fetchDishes();
+        this.props.fetchComments();
+        this.props.fetchPromos();
+        this.props.fetchLeaders();
     }
 
     render(){
@@ -42,31 +48,34 @@ class Main extends Component {
             <Fragment>
                 <Header />
                 <Switch>
-                    {   /* There is not performance different between component and render prop,
-                       If you are using component={AppComponent} directly, 
-                       If you want to assign some props to AppComponent, 
-                       use render={() => <AppComponent {...props}/> } 
-                       instead of component={() => <AppComponent {...props}/> } */}
-                    <Route exact path="/home" render={() => <Home  
-                        dish={this.props.disheStore.dishes.filter(d => d.featured)[0]}
-                        dishLoading={this.props.disheStore.isLoading}
-                        dishErrMsg={this.props.disheStore.errMsg}
-                        promotion={this.props.promotions.filter(f => f.featured)[0]}
-                        leader={this.props.leaders.filter(l => l.featured)[0]}
-                        />}>
+                    <Route exact path="/home" render={() => 
+                            <Home  
+                                dish={this.props.dishStore.dishes.filter(d => d.featured)[0]}
+                                dishLoading={this.props.dishStore.isLoading}
+                                dishErrMsg={this.props.dishStore.errMsg}
+                                promotion={this.props.promotionStore.promotions.filter((promo) => promo.featured)[0]}
+                                promoLoading={this.props.promotionStore.isLoading}
+                                promoErrMsg={this.props.promotionStore.errMsg}
+                                leader={this.props.leaderStore.leaders.filter(l => l.featured)[0]}
+                                leaderLoading={this.props.leaderStore.isLoading} 
+                                leaderErrMsg={this.props.leaderStore.errMsg}  />
+                        }>
                     </Route> 
-                    <Route exact path="/menu" render={() => <Menu   dishStore={this.props.disheStore} />}  />
+                    <Route exact path="/menu" render={() => <Menu   dishStore={this.props.dishStore} />}  />
                     <Route path="/menu/:id" render={({match}) => (
                         <DishDetail 
-                            selectedDish={this.props.disheStore.dishes.filter(d => d.id === parseInt(match.params.id))[0]}
-                            dishLoading={this.props.disheStore.isLoading}
-                            dishErrMsg={this.props.disheStore.errMsg}
-                            comments={this.props.comments.filter(c => c.dishId === parseInt(match.params.id))}
-                            addComment={this.props.addComment}
+                            selectedDish={this.props.dishStore.dishes.filter(d => d.id === parseInt(match.params.id))[0]}
+                            dishLoading={this.props.dishStore.isLoading}
+                            dishErrMsg={this.props.dishStore.errMsg}
+                            comments={this.props.commentStore.comments.filter(c => c.dishId === parseInt(match.params.id,10))}
+                            commentsLoading={this.props.commentStore.isLoading}
+                            commentsErrMsg={this.props.commentStore.errMsg}
+                            postComment={this.props.postComment}
                         />
                     )} />
-                    <Route exact path="/contactus" component={Contact} />
-                    <Route exact path="/aboutus" render={() => <About leaders={this.props.leaders} />} />
+                    <Route exact path="/contactus" component={() => <Contact resetFeedbackForm={this.props.resetFeedbackForm} />} />
+                    <Route exact path="/aboutus" render={() => <About leaders={this.props.leaderStore.leaders} 
+                            leaderLoading={this.props.leaderStore.isLoading} leaderErrMsg={this.props.leaderStore.errMsg}/>} />
                     <Redirect to="/home" />
                 </Switch>
                 <Footer />

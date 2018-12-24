@@ -1,44 +1,66 @@
-import {COMMENTS} from '../shared/comments';
-import {PROMOTIONS} from '../shared/promotions';
-import {LEADERS} from '../shared/leaders';
 
 import * as ActionType from './ActionTypes';
 
 export const Dishes = (state = {isLoading: true, errMsg: null, dishes: []}, action) => {
-    switch(action.type){
+    switch(action.type) {
         case ActionType.DISHES_LOADING:
-            return {...state, isLoading: action.payload, errMess: null, dishes: []};
+            return {...state, isLoading: action.payload, errMsg: null, dishes: []};
         case ActionType.DISHES_FAILED:
-            return {...state, isLoading: false, errMess: action.payload, dishes: []};
+            return {...state, isLoading: false, errMsg: action.payload, dishes: []};
         case ActionType.ADD_DISHES:
-            return {...state, isLoading: false, errMess: null, dishes: action.payload};
+            return {...state, isLoading: false, errMsg: null, dishes: action.payload};
         default:
             return state;
     }
 }
 
-export const Comments = (state = COMMENTS, action) => {
+export const Comments = (state = {isLoading: true, errMsg: null, comments: []}, action) => {
     switch(action.type){
+        case ActionType.COMMENTS_LOADING:
+            return {...state, isLoading: action.payload, errMsg: null, comments: []};
+        
+        case ActionType.COMMENTS_FAILED:
+            return {...state, isLoading: false, errMsg: action.payload, comments: []};
+        
+        case ActionType.ADD_COMMENTS:
+            return {...state, isLoading: false, errMsg: null, comments: action.payload};
+        
         case ActionType.ADD_COMMENT:
             var comment = action.payload;
-            comment.id = state.length;
-            comment.date = new Date().toISOString();
-            return state.concat(comment);
+            return {...state, comments: state.comments.concat(comment)};
         default:
             return state;
     }
 }
 
-export const Promotions = (state = PROMOTIONS, action) => {
-    switch(action){
-        default:
-            return state;
-    }
-}
+export const Promotions = (state  = { isLoading: true,  errMsg: null,    promotions:[]}, action) => {
+    switch (action.type) {
+        case ActionType.ADD_PROMOS:
+            return {...state, isLoading: false, errMsg: null, promotions: action.payload};
 
-export const Leaders = (state = LEADERS, action) => {
-    switch(action){
+        case ActionType.PROMOS_LOADING:
+            return {...state, isLoading: true, errMsg: null, promotions: []}
+
+        case ActionType.PROMOS_FAILED:
+            return {...state, isLoading: false, errMsg: action.payload};
+
+        default:
+        return state;
+    }
+};
+
+export const Leaders = (state  = { isLoading: true,  errMsg: null,    leaders:[]}, action) => {
+    switch (action.type) {
+        case ActionType.ADD_LEADERS:
+            return {...state, isLoading: false, errMsg: null, leaders: action.payload};
+
+        case ActionType.LEADERS_LOADING:
+            return {...state, isLoading: true, errMsg: null, leaders: []}
+
+        case ActionType.LEADERS_FAILED:
+            return {...state, isLoading: false, errMsg: action.payload};
+
         default:
             return state;
     }
-}
+};

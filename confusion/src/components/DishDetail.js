@@ -3,12 +3,13 @@ import {Card, CardImg, CardText, CardBody,  CardTitle, Breadcrumb, BreadcrumbIte
 import {Link} from 'react-router-dom';
 import CommentsForm from './CommentsForm';
 import { Spinner } from './LoadingSpinner';
+import { baseUrl } from '../shared/baseUrl';
 
 function RenderDish({dish}) {
     if (dish != null) {
         return(
             <Card key={dish.id}>
-                <CardImg top src={dish.image} alt={dish.name} />
+                <CardImg top src={baseUrl + dish.image} alt={dish.name} />
                 <CardBody>
                     <CardTitle>{dish.name}</CardTitle>
                     <CardText>{dish.description}</CardText>
@@ -95,7 +96,7 @@ const DishDetail = (props) => {
                         </div> 
                         <div className="col-12 col-md-5 m-5">
                             <RenderComments comments={props.comments} /> 
-                            <CommentsForm addComment={props.addComment} dishId={props.selectedDish.id} />
+                            <CommentsForm postComment={props.postComment} dishId={props.selectedDish.id} />
                         </div>
                     </div>
                 </div>

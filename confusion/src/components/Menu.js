@@ -2,12 +2,13 @@ import React from 'react';
 import {Card, CardImg, CardImgOverlay,  CardTitle, Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import {NavLink} from 'react-router-dom';
 import { Spinner } from './LoadingSpinner';
+import { baseUrl } from '../shared/baseUrl';
 
 function MenuItem({dishItem}){
     return (
         <Card key={dishItem.id}>
             <NavLink to={`/menu/${dishItem.id}`}>
-                <CardImg src={dishItem.image} alt={dishItem.name} />
+                <CardImg src={baseUrl + dishItem.image} alt={dishItem.name} />
                 <CardImgOverlay>
                     <CardTitle>{dishItem.name}</CardTitle>
                 </CardImgOverlay>

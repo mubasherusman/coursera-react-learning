@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle} from 'reactstrap';
-
+import { baseUrl } from '../shared/baseUrl';
 import { Spinner } from './LoadingSpinner';
 
 const RenderCard = ({item, isLoading, errMsg, classNamePar}) => {
@@ -19,7 +19,7 @@ const RenderCard = ({item, isLoading, errMsg, classNamePar}) => {
     } else {
         return(
             <Card>
-                <CardImg src={item.image} alt={item.name} className={classNamePar} />
+                <CardImg src={baseUrl + item.image} alt={item.name} className={classNamePar} />
                 <CardBody>
                     <CardTitle>{item.name}</CardTitle>
                     {item.designation ? 
@@ -41,10 +41,10 @@ function Home(props) {
                     <RenderCard item={props.dish} classNamePar={''} isLoading={props.dishLoading} errMsg={props.errMsg}/>
                 </div>
                 <div className="col-12 col-md m-2">
-                    <RenderCard item={props.promotion} classNamePar={''} />
+                    <RenderCard item={props.promotion} classNamePar={''} isLoading={props.promoLoading} errMsg={props.promoErrMsg} />
                 </div>
                 <div className="col-12 col-md m-2">
-                    <RenderCard item={props.leader} classNamePar={'imageSize'}/>
+                    <RenderCard item={props.leader} classNamePar={'imageSize'} isLoading={props.leaderLoading} errMsg={props.leaderErrMsg}/>
                 </div>
             </div>
         </div>
