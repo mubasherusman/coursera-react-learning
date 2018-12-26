@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle} from 'reactstrap';
 import { baseUrl } from '../shared/baseUrl';
 import { Spinner } from './LoadingSpinner';
-
+import { FadeTransform } from 'react-animation-components';
 const RenderCard = ({item, isLoading, errMsg, classNamePar}) => {
     if(isLoading){
         return(
@@ -18,15 +18,17 @@ const RenderCard = ({item, isLoading, errMsg, classNamePar}) => {
         );
     } else {
         return(
-            <Card>
-                <CardImg src={baseUrl + item.image} alt={item.name} className={classNamePar} />
-                <CardBody>
-                    <CardTitle>{item.name}</CardTitle>
-                    {item.designation ? 
-                        <CardSubtitle>{item.designation}</CardSubtitle> : null }
-                    <CardText>{item.description}</CardText>
-                </CardBody>
-            </Card>
+            <FadeTransform in transformProps={{exitTransform: 'scale(0.5) translateY(-50%)'}}>
+                <Card>
+                    <CardImg src={baseUrl + item.image} alt={item.name} className={classNamePar} />
+                    <CardBody>
+                        <CardTitle>{item.name}</CardTitle>
+                        {item.designation ? 
+                            <CardSubtitle>{item.designation}</CardSubtitle> : null }
+                        <CardText>{item.description}</CardText>
+                    </CardBody>
+                </Card>
+            </FadeTransform>
         );
     }
     

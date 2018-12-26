@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 import CommentsForm from './CommentsForm';
 import { Spinner } from './LoadingSpinner';
 import { baseUrl } from '../shared/baseUrl';
-
+import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 function RenderDish({dish}) {
     if (dish != null) {
         return(
@@ -34,10 +34,12 @@ function RenderComments({comments}) {
             }
             var formatedDate = new Intl.DateTimeFormat('en-US',dateFormat).format(dateLocal);
             return(
-                <div key={comment.id} className="m-2">
-                    <li> {comment.comment} </li>
-                    <li> -- {comment.author}, {formatedDate}</li>
-                </div>
+                <Fade in>
+                    <div key={comment.id} className="m-2">
+                        <li> {comment.comment} </li>
+                        <li> -- {comment.author}, {formatedDate}</li>
+                    </div>
+                </Fade>
             )
         });
         
@@ -45,7 +47,9 @@ function RenderComments({comments}) {
             <Fragment key="comments">
                 <h4>Comments</h4>
                 <ul className="list-unstyled">
-                    {commentSection}
+                    <Stagger in>
+                        {commentSection}
+                    </Stagger>
                 </ul>
             </Fragment>
         )
@@ -92,7 +96,9 @@ const DishDetail = (props) => {
                     </div>
                     <div className="row">
                         <div  className="col-12 col-md-5 mt-5">
-                            <RenderDish dish={props.selectedDish} />
+                            <FadeTransform in  transformProps={{ exitTransform: 'scale(0.5) translateY(-50%)' }}>
+                                <RenderDish dish={props.selectedDish} />
+                            </FadeTransform>
                         </div> 
                         <div className="col-12 col-md-5 m-5">
                             <RenderComments comments={props.comments} /> 

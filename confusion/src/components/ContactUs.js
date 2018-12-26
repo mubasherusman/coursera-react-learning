@@ -12,9 +12,9 @@ const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val
 class Contact extends Component {
     
 
-    handleSubmit(values){
-        console.log('Current State is: ' + JSON.stringify(values));
-        alert('Current State is: ' + JSON.stringify(values));
+    handleSubmit(feedback){
+        console.log('Current State is: ' + JSON.stringify(feedback));
+        this.props.postFeedbackForm(feedback);
         this.props.resetFeedbackForm();
     }
 
@@ -64,7 +64,7 @@ class Contact extends Component {
                    </div>
                     <div className="col-12 col-md-9">
                         
-                    <Form model="feedback" onSubmit={(values) => this.handleSubmit(values)}>
+                    <Form model="feedback" onSubmit={(feedback) => this.handleSubmit(feedback)}>
                             <Row className="form-group">
                                 <Label htmlFor="firstname" md={2}>First Name</Label>
                                 <Col md={10}>

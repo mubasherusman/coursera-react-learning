@@ -2,36 +2,57 @@ import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { baseUrl } from '../shared/baseUrl';
+import {Spinner} from './LoadingSpinner';
+import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 
-function RenderLeader({leader}){
-    if(leader !=null){
-        return (
-            <Media key={ leader.id} tag="li" className="mt-5">
-                <Media left top>
-                    <Media object src={baseUrl + leader.image} alt={leader.name} height="150" width="200" />
-                </Media>
-                <Media body className="ml-5">
-                    <Media heading>{leader.name}</Media>
-                    <p>{leader.designation}</p>
-                    <p>{leader.description}</p>
-                </Media>
-            </Media>
-        )
-    } else {
+function RenderLeaders({leaders, isLoading, errMsg}){
+    if(isLoading){
         return(
-            <div></div>
+            <Card>
+                <CardBody>
+                    <Spinner />
+                </CardBody>
+            </Card>
         );
+    } else if (errMsg){
+        return(
+            <h4>{errMsg}</h4>
+        );
+    } else {
+        if(leaders != null){
+            const leadersList = leaders.map((leader) => {
+                return (
+                    <Fade in>
+                        <Media key={ leader.id} tag="li" className="mt-5">
+                            <Media left top>
+                                <Media object src={baseUrl + leader.image} alt={leader.name} height="150" width="200" />
+                            </Media>
+                            <Media body className="ml-5">
+                                <Media heading>{leader.name}</Media>
+                                <p>{leader.designation}</p>
+                                <p>{leader.description}</p>
+                            </Media>
+                        </Media>
+                    </Fade>
+                );
+            });
+
+            return(
+                <FadeTransform in transformProps={{exitTransform: 'scale(0.5) translateY(-50%)'}}>
+                    <Media list>
+                        <Stagger in>
+                            {leadersList}
+                        </Stagger>
+                    </Media>
+                </FadeTransform>
+            );
+        } else {
+            return (<div />);
+        }
     }
-  
 }
 
 function About(props) {
-    
-    const leaders = props.leaders != null? props.leaders.map((item) => {
-        return (
-            <RenderLeader leader={item} key={item.id}/>
-        );
-    }) : <div></div> ;
 
     return(
         <div className="container" key="aboutus">
@@ -88,9 +109,7 @@ function About(props) {
                     <h2>Corporate Leadership</h2>
                 </div>
                 <div className="col-12">
-                    <Media list>
-                        {leaders}
-                    </Media>
+                    <RenderLeaders isLoading={props.leaderLoading} errMsg={props.leaderErrMsg} leaders={props.leaders} />
                 </div>
             </div>
         </div>

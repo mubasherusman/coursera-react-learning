@@ -1,5 +1,6 @@
 import * as ActionType from './ActionTypes';
 import { baseUrl } from '../shared/baseUrl';
+import { actions } from 'react-redux-form';
 
 
 export const fetchDishes = () => (dispatch) => {
@@ -86,6 +87,21 @@ export const fetchLeaders = () => (dispatch) => {
 export const leadersLoading = (isLoading) => ({ type: ActionType.LEADERS_LOADING, payload: isLoading})
 export const leadersFailed = (errMsg) => ({ type: ActionType.LEADERS_FAILED, payload: errMsg})
 export const addLeaders = (leaders) => ({ type: ActionType.ADD_LEADERS, payload: leaders})
+//-------------------------------------------------------------------------------
+export const postFeedback = (feedback) => (dispatch) => {
+    dispatch(actions.setPending('feedback', true));
+    return fetch(baseUrl + 'feedback', {
+        method: "POST",
+        body: JSON.stringify(feedback),
+        headers: {
+          "Content-Type": "application/json"
+        },
+        credentials: "same-origin"
+    }).then(handleApiErrors,handleNetworkErrors)
+        .then(response => response.json())
+        .then(feedbackDto => {alert('Current State is: ' + JSON.stringify(feedbackDto)); dispatch(actions.setSubmitted('feedback', true));})
+        .catch(error =>  { console.log('post Feedback', error.message); alert('Your Feedback could not be posted\nError: '+error.message); });
+};
 
 // ---- Error Handler
 const handleApiErrors = (response) => {
